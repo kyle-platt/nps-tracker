@@ -14,6 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <div>TODO add nav with dynamic sign in / sign out button</div>
         <SupabaseProvider>{children}</SupabaseProvider>
       </body>
     </html>
