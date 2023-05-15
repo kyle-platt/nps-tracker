@@ -1,4 +1,7 @@
+import Image from "next/image";
 import SupabaseProvider from "./supabase-provider";
+import Link from "next/link";
+import Header from "./header/header";
 
 export const metadata = {
   title: "NPS Tracker",
@@ -14,8 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div>TODO add nav with dynamic sign in / sign out button</div>
-        <SupabaseProvider>{children}</SupabaseProvider>
+        <SupabaseProvider>
+          {/* @ts-expect-error Server Component */}
+          <Header />
+          {children}
+        </SupabaseProvider>
       </body>
     </html>
   );

@@ -1,6 +1,5 @@
 import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { headers, cookies } from "next/headers";
-import Login from "./login";
 import Link from "next/link";
 
 export default async function Home() {
@@ -14,7 +13,6 @@ export default async function Home() {
 
   return (
     <main>
-      <Login />
       <h1>National Park Tracker</h1>
       <p>
         Track your trips to national parks across the United States and keep a
