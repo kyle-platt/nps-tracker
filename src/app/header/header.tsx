@@ -13,14 +13,10 @@ export default async function Header() {
       return Boolean(session);
     });
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-  };
-
   return (
     <div>
       <Link href="/">
-        <Image src="/nps.svg" width={24} height={24} alt="NPS Logo" />
+        <Image src="/nps.svg" width={36} height={36} alt="NPS Logo" />
         Tracker
       </Link>
       {isLoggedIn ? <SignOut /> : <Link href="/signin">Sign In</Link>}
