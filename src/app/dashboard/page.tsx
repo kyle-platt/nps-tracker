@@ -1,23 +1,54 @@
 import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import ParkTile from "./parkTile";
+
+export interface Park {
+  id: string;
+  name: string;
+  state: string;
+  rel_id?: string;
+  hasVisited: boolean;
+}
 
 export default async function Home() {
   const supabase = createServerComponentSupabaseClient({ headers, cookies });
 
-  await supabase.auth.getSession().then(({ data: { session } }) => {
-    // If not logged in, redirect to sign in
-    if (!Boolean(session)) {
-      redirect("/signin");
-    }
-  });
+  const session = await supabase.auth
+    .getSession()
+    .then(({ data: { session } }) => {
+      // If not logged in, redirect to sign in
+      if (!Boolean(session)) {
+        redirect("/signin");
+      }
 
-  const { data: parks } = await supabase.from("parks").select();
+      return session;
+    });
+
+  const { data: parks = [] } = await supabase.from("parks").select();
+
+  const { data: visitedParks = [] } = await supabase
+    .from("parks_user_rel")
+    .select();
+
+  const parksWithVisits = parks?.map((park) => {
+    const visitedPark = visitedParks?.find(
+      (visitedPark) => visitedPark.park_id === park.id
+    );
+
+    return {
+      ...park,
+      rel_id: visitedPark?.id,
+      hasVisited: !!visitedPark,
+    };
+  }) as Park[];
 
   return (
     <main>
       <h1>Dashboard</h1>
-      <pre>{JSON.stringify(parks, null, 2)}</pre>
+      {parksWithVisits?.map((park) => (
+        <ParkTile key={park.id} park={park} user_id={session!.user.id} />
+      ))}
     </main>
   );
 }
