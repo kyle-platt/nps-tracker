@@ -29,15 +29,18 @@ export default function ParkTile({ park, user_id }: Props) {
   };
 
   return (
-    <div>
+    <div className="mb-2">
       <input
         id={park.id}
         type="checkbox"
         value={park.id}
         checked={park.hasVisited}
         onChange={handleCheck}
+        className="cursor-pointer"
       />
-      <label htmlFor={park.id}>{park.name}</label>
+      <label className="ml-1 cursor-pointer" htmlFor={park.id}>
+        {park.name}
+      </label>
     </div>
   );
 }

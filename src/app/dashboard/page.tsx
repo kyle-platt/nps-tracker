@@ -45,10 +45,12 @@ export default async function Home() {
   }) as Park[];
 
   return (
-    <main>
+    <main className="flex items-center flex-col h-full bg-tan px-4">
       {/* @ts-expect-error Server Component */}
       <Header />
-      <h1>Dashboard</h1>
+      <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
+        Dashboard
+      </h1>
       {parksWithVisits?.map((park) => (
         <ParkTile key={park.id} park={park} user_id={session!.user.id} />
       ))}
