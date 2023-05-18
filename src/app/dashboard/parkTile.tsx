@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useSupabase } from "../supabase-provider";
 import { Park } from "./page";
 import { useRouter } from "next/navigation";
+import debounce from "lodash.debounce";
 
 interface Props {
   park: Park;
@@ -36,7 +37,7 @@ export default function ParkTile({ park, user_id }: Props) {
         type="checkbox"
         value={park.id}
         checked={park.hasVisited}
-        onChange={handleCheck}
+        onChange={debounce(handleCheck, 500)}
         aria-label={park.name}
         className="cursor-pointer h-full w-full absolute m-0 z-10 opacity-0 top-0 left-0 peer"
       />
