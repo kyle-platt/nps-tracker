@@ -51,9 +51,12 @@ export default async function Home() {
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         Dashboard
       </h1>
-      <p className="py-2 mb-8 text-gray-700 w-full text-center sticky top-0 bg-tan z-20">
-        {visitedParks?.length} / {parks?.length} visited
+      <p className="text-gray-700 text-center mb-4">
+        Click the parks you have visited to track your progress.
       </p>
+      <div className="py-2 mb-6 text-gray-800 w-full text-center sticky top-0 bg-tan z-20 flex justify-center">
+        {visitedParks?.length} / {parks?.length} visited
+      </div>
       <div className="px-1 mb-6 grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10">
         {parksWithVisits?.map((park) => (
           <ParkTile key={park.id} park={park} user_id={session!.user.id} />
