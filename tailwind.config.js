@@ -7,6 +7,12 @@ module.exports = {
         tan: "#efdecd",
         light_green: "#56903a",
       },
+      blur: {
+        xs: "1px",
+      },
+      screens: {
+        mobileL: "480px",
+      },
     },
   },
   plugins: [],

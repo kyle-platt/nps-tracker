@@ -10,6 +10,7 @@ export interface Park {
   state: string;
   rel_id?: string;
   hasVisited: boolean;
+  src: string;
 }
 
 export default async function Home() {
@@ -36,7 +37,6 @@ export default async function Home() {
     const visitedPark = visitedParks?.find(
       (visitedPark) => visitedPark.park_id === park.id
     );
-
     return {
       ...park,
       rel_id: visitedPark?.id,
@@ -54,9 +54,11 @@ export default async function Home() {
       <p className="mb-8 text-gray-700">
         {visitedParks?.length} / {parks?.length} visited
       </p>
-      {parksWithVisits?.map((park) => (
-        <ParkTile key={park.id} park={park} user_id={session!.user.id} />
-      ))}
+      <div className="mb-4 grid gap-2 grid-cols-2 mobileL:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10">
+        {parksWithVisits?.map((park) => (
+          <ParkTile key={park.id} park={park} user_id={session!.user.id} />
+        ))}
+      </div>
     </main>
   );
 }

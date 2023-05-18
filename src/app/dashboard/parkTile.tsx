@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useSupabase } from "../supabase-provider";
 import { Park } from "./page";
 import { useRouter } from "next/navigation";
@@ -29,18 +30,25 @@ export default function ParkTile({ park, user_id }: Props) {
   };
 
   return (
-    <div className="mb-2">
+    <div className="relative">
       <input
         id={park.id}
         type="checkbox"
         value={park.id}
         checked={park.hasVisited}
         onChange={handleCheck}
-        className="cursor-pointer"
+        aria-label={park.name}
+        className="cursor-pointer h-full w-full absolute m-0 z-10 opacity-0 top-0 left-0 peer"
       />
-      <label className="ml-1 cursor-pointer" htmlFor={park.id}>
-        {park.name}
-      </label>
+      <Image
+        src={`/parks/${park.src}`}
+        width={150}
+        height={200}
+        alt={park.name}
+        className={`peer-focus-visible:outline outline-2 outline-blue-800 ${
+          park.hasVisited ? "" : "grayscale blur-xs"
+        }`}
+      />
     </div>
   );
 }
