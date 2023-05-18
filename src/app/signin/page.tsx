@@ -22,7 +22,7 @@ export default async function Home() {
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         Your Account
       </h1>
-      <p className="mb-8 text-gray-700">
+      <p className="mb-8 text-gray-700 text-center">
         Sign in or{" "}
         <Link className="text-light_green hover:underline" href="/signup">
           create an account

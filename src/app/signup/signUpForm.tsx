@@ -24,7 +24,7 @@ export default function SignUpForm() {
     if (error?.message) {
       setError(error.message);
     } else {
-      router.replace("/signup-success");
+      router.replace("/signup/success");
     }
   };
 
