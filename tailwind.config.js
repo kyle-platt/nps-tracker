@@ -10,9 +10,6 @@ module.exports = {
       blur: {
         xs: "1px",
       },
-      screens: {
-        mobileL: "480px",
-      },
     },
   },
   plugins: [],
