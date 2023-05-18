@@ -15,7 +15,7 @@ export default async function Header() {
     });
 
   return (
-    <div className="flex justify-between p-4 w-full">
+    <div className="flex justify-between py-4 w-full">
       <NextLink href="/" className="flex items-center text-gray-800 font-bold">
         <Image
           src="/nps.svg"

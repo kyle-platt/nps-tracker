@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         tan: "#efdecd",
+        light_green: "#56903a",
       },
     },
   },

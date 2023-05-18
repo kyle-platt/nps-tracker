@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import { useSupabase } from "../supabase-provider";
 import { useRouter } from "next/navigation";
+import Button from "../common/Button";
+import Input from "../common/Input";
 
 export default function SignInForm() {
   const { supabase } = useSupabase();
@@ -27,26 +29,34 @@ export default function SignInForm() {
   };
 
   return (
-    <div>
-      {error && <div>{error}</div>}
+    <div className="w-full max-w-sm relative">
+      {error && (
+        <div className="text-center text-red-600 absolute w-full -top-4">
+          {error}
+        </div>
+      )}
       <form onSubmit={handleLogin}>
-        <label>
+        <label className="flex flex-col text-gray-800 mb-3">
           Email
-          <input
+          <Input
+            className="mt-1"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
           />
         </label>
-        <label>
+        <label className="flex flex-col text-gray-800 mb-6">
           Password
-          <input
+          <Input
+            className="mt-1"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
           />
         </label>
-        <button type="submit">Sign In</button>
+        <Button type="submit" className="w-full">
+          Sign In
+        </Button>
       </form>
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "../common/Button";
 import { useSupabase } from "../supabase-provider";
 
 export default function SignOut() {
@@ -9,5 +10,9 @@ export default function SignOut() {
     await supabase.auth.signOut();
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return (
+    <Button variant="secondary" onClick={handleLogout}>
+      Logout
+    </Button>
+  );
 }

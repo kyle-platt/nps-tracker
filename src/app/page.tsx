@@ -13,11 +13,13 @@ export default async function Home() {
     });
 
   return (
-    <main className="flex items-center flex-col h-screen bg-tan">
+    <main className="flex items-center flex-col h-screen bg-tan px-4">
       {/* @ts-expect-error Server Component */}
       <Header />
-      <h1 className="text-4xl mt-8 mb-2">National Park Tracker</h1>
-      <p className="mb-8">
+      <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
+        National Park Tracker
+      </h1>
+      <p className="mb-8 text-gray-700 text-center">
         Track your trips to national parks across the United States.
       </p>
       {isLoggedIn ? (

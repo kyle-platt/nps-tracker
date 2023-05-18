@@ -16,12 +16,17 @@ export default async function Home() {
   });
 
   return (
-    <main>
+    <main className="flex items-center flex-col h-screen bg-tan px-4">
       {/* @ts-expect-error Server Component */}
       <Header />
-      <h1>Your Account</h1>
-      <p>
-        Sign in or <Link href="/signup">create an account</Link>
+      <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
+        Your Account
+      </h1>
+      <p className="mb-8 text-gray-700">
+        Sign in or{" "}
+        <Link className="text-light_green hover:underline" href="/signup">
+          create an account
+        </Link>
       </p>
       <SignInForm />
     </main>
