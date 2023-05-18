@@ -2,6 +2,7 @@ import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-next
 import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import ParkTile from "./parkTile";
+import Header from "../header/header";
 
 export interface Park {
   id: string;
@@ -45,6 +46,8 @@ export default async function Home() {
 
   return (
     <main>
+      {/* @ts-expect-error Server Component */}
+      <Header />
       <h1>Dashboard</h1>
       {parksWithVisits?.map((park) => (
         <ParkTile key={park.id} park={park} user_id={session!.user.id} />

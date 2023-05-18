@@ -1,7 +1,6 @@
-import Image from "next/image";
 import SupabaseProvider from "./supabase-provider";
-import Link from "next/link";
 import Header from "./header/header";
+import "./globals.css";
 
 export const metadata = {
   title: "NPS Tracker",
@@ -17,11 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SupabaseProvider>
-          {/* @ts-expect-error Server Component */}
-          <Header />
-          {children}
-        </SupabaseProvider>
+        <SupabaseProvider>{children}</SupabaseProvider>
       </body>
     </html>
   );
