@@ -23,6 +23,7 @@ export default async function Header() {
           height={36}
           alt="NPS Logo"
           className="mr-2"
+          priority
         />
         Tracker
       </NextLink>

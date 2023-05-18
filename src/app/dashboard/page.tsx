@@ -51,6 +51,9 @@ export default async function Home() {
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         Dashboard
       </h1>
+      <p className="mb-8 text-gray-700">
+        {visitedParks?.length} / {parks?.length} visited
+      </p>
       {parksWithVisits?.map((park) => (
         <ParkTile key={park.id} park={park} user_id={session!.user.id} />
       ))}
