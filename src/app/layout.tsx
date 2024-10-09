@@ -1,5 +1,4 @@
 import SupabaseProvider from "./supabase-provider";
-import Header from "./header/header";
 import "./globals.css";
 
 export const metadata = {
@@ -8,11 +7,11 @@ export const metadata = {
     "Track your experiences at National Parks around the United States",
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
+}
+
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body>

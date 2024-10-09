@@ -1,10 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useSupabase } from "../supabase-provider";
 import { useRouter } from "next/navigation";
 import Button from "../common/Button";
 import Input from "../common/Input";
+import { auth } from "../firebase";
 
 export default function SignInForm() {
   const { supabase } = useSupabase();
@@ -16,16 +18,29 @@ export default function SignInForm() {
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // const { error } = await supabase.auth.signInWithPassword({
+    //   email,
+    //   password,
+    // });
 
-    if (error?.message) {
-      setError(error.message);
-    } else {
-      router.replace("/dashboard");
-    }
+    // if (error?.message) {
+    //   setError(error.message);
+    // } else {
+    //   router.replace("/dashboard");
+    // }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        router.replace("/dashboard");
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   return (
