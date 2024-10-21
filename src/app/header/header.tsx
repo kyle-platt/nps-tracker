@@ -1,18 +1,25 @@
-import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { headers, cookies } from "next/headers";
+"use client";
+
 import Image from "next/image";
 import SignOut from "./signOut";
 import Link from "../common/Link";
 import NextLink from "next/link";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import { useEffect, useState } from "react";
 
-export default async function Header() {
-  const supabase = createServerComponentSupabaseClient({ headers, cookies });
+export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const isLoggedIn = await supabase.auth
-    .getSession()
-    .then(({ data: { session } }) => {
-      return Boolean(session);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
     });
+  }, []);
 
   return (
     <div className="flex justify-between py-4 w-full">

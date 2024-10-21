@@ -1,4 +1,3 @@
-import SupabaseProvider from "./supabase-provider";
 import "./globals.css";
 
 export const metadata = {
@@ -14,9 +13,7 @@ interface Props {
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <body>
-        <SupabaseProvider>{children}</SupabaseProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
