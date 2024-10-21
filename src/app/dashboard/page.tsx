@@ -1,52 +1,84 @@
-import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { headers, cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import ParkTile from "./parkTile";
+"use client";
+
 import Header from "../header/header";
+import { auth, db } from "../firebase";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { onAuthStateChanged } from "firebase/auth";
+import {
+  DocumentData,
+  DocumentReference,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
+import ParkTile from "./parkTile";
 
 export interface Park {
   id: string;
   name: string;
-  state: string;
-  rel_id?: string;
-  hasVisited: boolean;
+  location: string;
   src: string;
 }
 
-export default async function Home() {
-  const supabase = createServerComponentSupabaseClient({ headers, cookies });
-
-  const session = await supabase.auth
-    .getSession()
-    .then(({ data: { session } }) => {
-      // If not logged in, redirect to sign in
-      if (!Boolean(session)) {
-        redirect("/signin");
-      }
-
-      return session;
+const getParks = () => {
+  return getDocs(collection(db, "parks")).then((data) => {
+    const arr = [] as Park[];
+    data.forEach((doc) => {
+      arr.push({ id: doc.id, ...doc.data() } as Park);
     });
 
-  const { data: parks = [] } = await supabase.from("parks").select();
+    return arr;
+  });
+};
 
-  const { data: visitedParks = [] } = await supabase
-    .from("parks_user_rel")
-    .select();
+export default function Home() {
+  const router = useRouter();
+  const [parks, setParks] = useState<Park[]>([]);
+  const [visitedParks, setVisitedParks] = useState<string[]>([]);
+  const docRef = useRef<DocumentReference<DocumentData, DocumentData> | null>(
+    null
+  );
 
-  const parksWithVisits = parks?.map((park) => {
-    const visitedPark = visitedParks?.find(
-      (visitedPark) => visitedPark.park_id === park.id
-    );
-    return {
-      ...park,
-      rel_id: visitedPark?.id,
-      hasVisited: !!visitedPark,
-    };
-  }) as Park[];
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        docRef.current = doc(db, "user", user.uid);
+        getDoc(docRef.current).then((docSnap) => {
+          if (docSnap.exists()) {
+            setVisitedParks(docSnap.data().visitedParks);
+          } else {
+            setDoc(docRef.current!, { visitedParks });
+          }
+        });
+      } else {
+        router.replace("/signin");
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    getParks().then((parkList) => setParks(parkList));
+  }, []);
+
+  const handleCheck = async (parkId: string, hasVisited: boolean) => {
+    const newArr = hasVisited
+      ? visitedParks.filter((p) => p !== parkId)
+      : [...visitedParks, parkId];
+
+    setDoc(docRef.current!, { visitedParks: newArr }).then(() => {
+      getDoc(docRef.current!).then((docSnap) => {
+        if (docSnap.exists()) {
+          setVisitedParks(docSnap.data().visitedParks);
+        }
+      });
+    });
+  };
 
   return (
     <main className="flex items-center flex-col h-full bg-tan px-4">
-      {/* @ts-expect-error Server Component */}
       <Header />
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         Dashboard
@@ -55,11 +87,18 @@ export default async function Home() {
         Click the parks you have visited to track your progress.
       </p>
       <div className="py-2 mb-6 text-gray-800 w-full text-center sticky top-0 bg-tan z-20 flex justify-center">
-        {visitedParks?.length} / {parks?.length} visited
+        {visitedParks.length} / {parks?.length} visited
       </div>
       <div className="px-1 mb-6 grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10">
-        {parksWithVisits?.map((park) => (
-          <ParkTile key={park.id} park={park} user_id={session!.user.id} />
+        {parks?.map((park) => (
+          <ParkTile
+            key={park.id}
+            park={park}
+            hasVisited={
+              visitedParks ? visitedParks.some((id) => id === park.id) : false
+            }
+            handleCheck={handleCheck}
+          />
         ))}
       </div>
     </main>

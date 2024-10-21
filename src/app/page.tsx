@@ -1,20 +1,26 @@
-import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { headers, cookies } from "next/headers";
+"use client";
+
 import Header from "./header/header";
 import Link from "./common/Link";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
-export default async function Home() {
-  const supabase = createServerComponentSupabaseClient({ headers, cookies });
+export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const isLoggedIn = await supabase.auth
-    .getSession()
-    .then(({ data: { session } }) => {
-      return Boolean(session);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
     });
+  }, []);
 
   return (
     <main className="flex items-center flex-col h-screen bg-tan px-4">
-      {/* @ts-expect-error Server Component */}
       <Header />
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         National Park Tracker

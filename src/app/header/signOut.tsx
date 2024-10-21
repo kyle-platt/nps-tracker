@@ -1,13 +1,17 @@
 "use client";
 
+import { signOut } from "firebase/auth";
 import Button from "../common/Button";
-import { useSupabase } from "../supabase-provider";
+import { useRouter } from "next/navigation";
+import { auth } from "../firebase";
 
 export default function SignOut() {
-  const { supabase } = useSupabase();
+  const router = useRouter();
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      router.replace("/");
+    });
   };
 
   return (

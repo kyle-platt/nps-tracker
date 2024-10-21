@@ -1,13 +1,13 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useSupabase } from "../supabase-provider";
-import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import { auth } from "../firebase";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
-  const { supabase } = useSupabase();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,16 +16,13 @@ export default function SignUpForm() {
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error?.message) {
-      setError(error.message);
-    } else {
-      router.replace("/signup/success");
-    }
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        router.replace("/dashboard");
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
   return (

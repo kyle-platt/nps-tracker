@@ -1,34 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { useSupabase } from "../supabase-provider";
 import { Park } from "./page";
-import { useRouter } from "next/navigation";
 import debounce from "lodash.debounce";
 
 interface Props {
   park: Park;
-  user_id: string;
+  hasVisited: boolean;
+  handleCheck: (parkId: string, hasVisited: boolean) => Promise<void>;
 }
 
-export default function ParkTile({ park, user_id }: Props) {
-  const { supabase } = useSupabase();
-  const router = useRouter();
-
-  const handleCheck = async () => {
-    if (park.hasVisited) {
-      await supabase
-        .from("parks_user_rel")
-        .delete()
-        .eq("id", park.rel_id)
-        .then(() => router.refresh());
-    } else {
-      await supabase
-        .from("parks_user_rel")
-        .insert({ park_id: park.id, user_id })
-        .then(() => router.refresh());
-    }
-  };
+export default function ParkTile({ park, hasVisited, handleCheck }: Props) {
+  // const handleCheck = async () => {
+  //   // Add to database and update state
+  //   await setDoc(doc(db, "user", user.uid), {
+  //     visitedParks: []
+  //   });
+  // };
 
   return (
     <div className="relative">
@@ -36,8 +24,8 @@ export default function ParkTile({ park, user_id }: Props) {
         id={park.id}
         type="checkbox"
         value={park.id}
-        checked={park.hasVisited}
-        onChange={debounce(handleCheck, 500)}
+        checked={false}
+        onChange={debounce(() => handleCheck(park.id, hasVisited), 500)}
         aria-label={park.name}
         className="cursor-pointer h-full w-full absolute m-0 z-10 opacity-0 top-0 left-0 peer"
       />
@@ -47,7 +35,7 @@ export default function ParkTile({ park, user_id }: Props) {
         height={200}
         alt={park.name}
         className={`peer-focus-visible:outline outline-2 outline-blue-800 ${
-          park.hasVisited ? "" : "grayscale blur-xs"
+          hasVisited ? "" : "grayscale blur-xs"
         }`}
       />
     </div>
