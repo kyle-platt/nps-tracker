@@ -1,28 +1,21 @@
-"use client";
-
 import Image from "next/image";
 import SignOut from "./signOut";
 import Link from "../common/Link";
 import NextLink from "next/link";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
-import { useEffect, useState } from "react";
+import { getTokens } from "next-firebase-auth-edge";
+import { cookies } from "next/headers";
+import { clientConfig, serverConfig } from "../firebase.config";
 
-export default function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, []);
+export default async function Header() {
+  const tokens = await getTokens(cookies(), {
+    apiKey: clientConfig.apiKey!,
+    cookieName: serverConfig.cookieName,
+    cookieSignatureKeys: serverConfig.cookieSignatureKeys,
+    serviceAccount: serverConfig.serviceAccount,
+  });
 
   return (
-    <div className="flex justify-between py-4 w-full">
+    <header className="flex justify-between py-4 w-full">
       <NextLink href="/" className="flex items-center text-gray-800 font-bold">
         <Image
           src="/nps.svg"
@@ -34,13 +27,13 @@ export default function Header() {
         />
         Tracker
       </NextLink>
-      {isLoggedIn ? (
+      {tokens ? (
         <SignOut />
       ) : (
         <Link variant="secondary" href="/signin">
           Sign In
         </Link>
       )}
-    </div>
+    </header>
   );
 }

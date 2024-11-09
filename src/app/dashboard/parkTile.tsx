@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Park } from "./page";
+import { Park } from "./parkContent";
 import debounce from "lodash.debounce";
 
 interface Props {
@@ -11,13 +11,6 @@ interface Props {
 }
 
 export default function ParkTile({ park, hasVisited, handleCheck }: Props) {
-  // const handleCheck = async () => {
-  //   // Add to database and update state
-  //   await setDoc(doc(db, "user", user.uid), {
-  //     visitedParks: []
-  //   });
-  // };
-
   return (
     <div className="relative">
       <input

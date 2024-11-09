@@ -1,23 +1,16 @@
-"use client";
-
 import Header from "./header/header";
 import Link from "./common/Link";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+import { getTokens } from "next-firebase-auth-edge";
+import { cookies } from "next/headers";
+import { clientConfig, serverConfig } from "./firebase.config";
 
-export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, []);
+export default async function Home() {
+  const tokens = await getTokens(cookies(), {
+    apiKey: clientConfig.apiKey!,
+    cookieName: serverConfig.cookieName,
+    cookieSignatureKeys: serverConfig.cookieSignatureKeys,
+    serviceAccount: serverConfig.serviceAccount,
+  });
 
   return (
     <main className="flex items-center flex-col h-screen bg-tan px-4">
@@ -28,7 +21,7 @@ export default function Home() {
       <p className="mb-8 text-gray-700 text-center">
         Track your trips to national parks across the United States.
       </p>
-      {isLoggedIn ? (
+      {tokens ? (
         <Link href="/dashboard">Go to dashboard</Link>
       ) : (
         <div>

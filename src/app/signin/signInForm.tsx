@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Button from "../common/Button";
 import Input from "../common/Input";
-import { auth } from "../firebase";
+import { auth } from "../firebase.config";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -15,15 +15,26 @@ export default function SignInForm() {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        router.replace("/dashboard");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        setError(errorMessage);
+    try {
+      const credential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const idToken = await credential.user.getIdToken();
+
+      await fetch("/api/login", {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       });
+
+      router.push("/dashboard");
+    } catch (e) {
+      setError((e as Error).message);
+    }
   };
 
   return (

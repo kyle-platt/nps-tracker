@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Input from "../common/Input";
 import Button from "../common/Button";
-import { auth } from "../firebase";
+import { auth } from "../firebase.config";
 import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
@@ -15,15 +15,34 @@ export default function SignUpForm() {
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
     await createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
-        router.replace("/dashboard");
+        router.replace("/signin");
       })
       .catch((error) => {
         setError(error.message);
       });
   };
+
+  // async function handleSubmit(event: FormEvent) {
+  //   event.preventDefault();
+
+  //   setError("");
+
+  //   if (password !== confirmation) {
+  //     setError("Passwords don't match");
+  //     return;
+  //   }
+
+  //   try {
+  //     await createUserWithEmailAndPassword(getAuth(app), email, password);
+  //     router.push("/login");
+  //   } catch (e) {
+  //     setError((e as Error).message);
+  //   }
+  // }
 
   return (
     <div className="w-full max-w-sm relative">
