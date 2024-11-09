@@ -5,14 +5,21 @@ import NextLink from "next/link";
 import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
 import { clientConfig, serverConfig } from "../firebase.config";
+import { use } from "react";
 
-export default async function Header() {
+async function getIsLoggedIn() {
   const tokens = await getTokens(cookies(), {
     apiKey: clientConfig.apiKey!,
     cookieName: serverConfig.cookieName,
     cookieSignatureKeys: serverConfig.cookieSignatureKeys,
     serviceAccount: serverConfig.serviceAccount,
   });
+
+  return !!tokens;
+}
+
+export default function Header() {
+  const isLoggedIn = use(getIsLoggedIn());
 
   return (
     <header className="flex justify-between py-4 w-full">
@@ -27,7 +34,7 @@ export default async function Header() {
         />
         Tracker
       </NextLink>
-      {tokens ? (
+      {isLoggedIn ? (
         <SignOut />
       ) : (
         <Link variant="secondary" href="/signin">
