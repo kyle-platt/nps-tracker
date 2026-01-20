@@ -41,7 +41,7 @@ export default function ParkContent() {
   const [isLoadingParks, setIsLoadingParks] = useState(true);
   const [isLoadingVisits, setIsLoadingVisits] = useState(true);
   const docRef = useRef<DocumentReference<DocumentData, DocumentData> | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -60,7 +60,6 @@ export default function ParkContent() {
         router.replace("/signin");
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

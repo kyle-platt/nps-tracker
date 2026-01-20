@@ -7,7 +7,7 @@ import debounce from "lodash.debounce";
 interface Props {
   park: Park;
   hasVisited: boolean;
-  handleCheck: (parkId: string, hasVisited: boolean) => Promise<void>;
+  handleCheck: (_parkId: string, _hasVisited: boolean) => Promise<void>;
 }
 
 export default function ParkTile({ park, hasVisited, handleCheck }: Props) {
