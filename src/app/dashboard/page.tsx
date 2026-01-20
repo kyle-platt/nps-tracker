@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import ParkContent from "./parkContent";
 
 export default async function Dashboard() {
-  const tokens = await getTokens(cookies(), {
+  const tokens = await getTokens(await cookies(), {
     apiKey: clientConfig.apiKey!,
     cookieName: serverConfig.cookieName,
     cookieSignatureKeys: serverConfig.cookieSignatureKeys,

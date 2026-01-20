@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { clientConfig, serverConfig } from "../firebase.config";
 
 export default async function SignIn() {
-  const tokens = await getTokens(cookies(), {
+  const tokens = await getTokens(await cookies(), {
     apiKey: clientConfig.apiKey!,
     cookieName: serverConfig.cookieName,
     cookieSignatureKeys: serverConfig.cookieSignatureKeys,
