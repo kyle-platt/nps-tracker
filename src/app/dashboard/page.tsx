@@ -1,6 +1,5 @@
 import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
-import Header from "../header/header";
 import { clientConfig, serverConfig } from "../firebase.config";
 import { redirect } from "next/navigation";
 import ParkContent from "./parkContent";
@@ -18,8 +17,7 @@ export default async function Dashboard() {
   }
 
   return (
-    <main className="flex items-center flex-col h-full bg-tan px-4 min-h-screen">
-      <Header />
+    <>
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         Dashboard
       </h1>
@@ -27,6 +25,6 @@ export default async function Dashboard() {
         Click the parks you have visited to track your progress.
       </p>
       <ParkContent />
-    </main>
+    </>
   );
 }

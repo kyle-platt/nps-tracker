@@ -1,4 +1,3 @@
-import Header from "./header/header";
 import Link from "./common/Link";
 import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
@@ -13,8 +12,7 @@ export default async function Home() {
   });
 
   return (
-    <main className="flex items-center flex-col h-screen bg-tan px-4">
-      <Header />
+    <>
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         National Park Tracker
       </h1>
@@ -31,6 +29,6 @@ export default async function Home() {
           <Link href="/signup">Sign Up</Link>
         </div>
       )}
-    </main>
+    </>
   );
 }
