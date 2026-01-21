@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import SignUpForm from "./signUpForm";
 import Link from "next/link";
-import Header from "../header/header";
 import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
 import { clientConfig, serverConfig } from "../firebase.config";
@@ -19,8 +18,7 @@ export default async function SignUp() {
   }
 
   return (
-    <main className="flex items-center flex-col h-screen bg-tan px-4">
-      <Header />
+    <>
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         Create a New Account
       </h1>
@@ -31,6 +29,6 @@ export default async function SignUp() {
         </Link>
       </p>
       <SignUpForm />
-    </main>
+    </>
   );
 }

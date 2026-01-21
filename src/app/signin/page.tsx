@@ -1,6 +1,5 @@
 import SignInForm from "./signInForm";
 import Link from "next/link";
-import Header from "../header/header";
 import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -19,8 +18,7 @@ export default async function SignIn() {
   }
 
   return (
-    <main className="flex items-center flex-col h-screen bg-tan px-4">
-      <Header />
+    <>
       <h1 className="text-4xl mt-8 mb-2 text-gray-800 text-center">
         Your Account
       </h1>
@@ -31,6 +29,6 @@ export default async function SignIn() {
         </Link>
       </p>
       <SignInForm />
-    </main>
+    </>
   );
 }

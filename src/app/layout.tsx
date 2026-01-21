@@ -1,4 +1,5 @@
 import "./globals.css";
+import Header from "./header/header";
 
 export const metadata = {
   title: "NPS Tracker",
@@ -13,7 +14,12 @@ interface Props {
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="min-h-screen bg-tan">
+        <Header />
+        <main className="flex items-center flex-col h-full  px-4">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
